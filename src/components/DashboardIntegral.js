@@ -25,8 +25,12 @@ import {
   LockOutlined as LockOutlinedIcon, 
   VisibilityOff as VisibilityOffIcon
 } from '@mui/icons-material';
-// =============== CONTEXTO DE LA APLICACIÓN ===============
 
+// =============== CONTEXTO DE LA APLICACIÓN ===============
+// URLs de las imágenes (ajusta las rutas según donde estén tus imágenes)
+const uvegLogoUrl = "/images/uveg_logo.jpg";
+const tlalLogoUrl = "/images/tlal.png";
+const tlalGobLogoUrl = "/images/tlal_gob.png";
 // Contexto de Autenticación
 const AuthContext = createContext();
 
@@ -35,10 +39,12 @@ const SolicitudesContext = createContext();
 
 // Mock de usuarios para la demo
 const mockUsers = [
-  { id: 1, username: 'admin', password: 'admin123', role: 'admin', name: 'Administrador Sistema' },
+  { id: 1, username: 'Asesor', password: 'jofiloteo', role: 'prueba', name: 'Prueba para el asesor' },
   { id: 2, username: 'capturista', password: 'captura123', role: 'capturista', name: 'Juan Pérez' },
   { id: 3, username: 'supervisor', password: 'super123', role: 'supervisor', name: 'María López' },
 ];
+
+
 
 // Datos iniciales para la demo
 const mockSolicitudes = [
@@ -417,6 +423,7 @@ const StatusBadge = ({ status, size = 'medium' }) => {
   );
 };
 
+
 // Componente de Navbar/Barra de Navegación
 const Navbar = () => {
   const navigate = useNavigate();
@@ -462,178 +469,243 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="sticky" color="primary">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          {/* Logo - Desktop */}
-          <Typography
-            variant="h6"
-            noWrap
-            component={RouterLink}
-            to="/dashboard"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Apoyos Sociales
-          </Typography>
+    <>
+      {/* Barra superior con logos e información institucional */}
+      <AppBar position="static" color="default" sx={{ py: 1, boxShadow: 1 }}>
+        <Container maxWidth="xl">
+          <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems="center">
+            {/* Contenedor de logos */}
+            <Box display="flex" alignItems="center" mb={{ xs: 1, sm: 0 }}>
+              <img 
+                src={uvegLogoUrl} 
+                alt="UVEG Logo" 
+                style={{ height: '40px', margin: '0 10px', objectFit: 'contain' }} 
+              />
+              <img 
+                src={tlalLogoUrl} 
+                alt="Tlalpujahua Logo" 
+                style={{ height: '40px', margin: '0 10px', objectFit: 'contain' }} 
+              />
+              <img 
+                src={tlalGobLogoUrl} 
+                alt="Gobierno Tlalpujahua Logo" 
+                style={{ height: '40px', margin: '0 10px', objectFit: 'contain' }} 
+              />
+            </Box>
+            
+            {/* Información institucional */}
+            <Box textAlign={{ xs: 'center', sm: 'right' }}>
+              <Typography variant="subtitle2" fontWeight="bold" color="primary">
+                Área de Desarrollo Social - Tlalpujahua, Michoacán
+              </Typography>
+              <Typography variant="caption" display="block" color="textSecondary">
+                Estadía Profesional UVEG - Tlalpujahua, Michoacán
+              </Typography>
+              <Typography variant="caption" display="block" color="textSecondary">
+                Desarrollado por Alfonso Boldo
+              </Typography>
+            </Box>
+          </Box>
+        </Container>
+      </AppBar>
 
-          {/* Menú Móvil */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="menu"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+      {/* Barra de navegación principal - Esta es la original */}
+      <AppBar position="sticky" color="primary">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            {/* Logo - Desktop */}
+            <Typography
+              variant="h6"
+              noWrap
+              component={RouterLink}
+              to="/dashboard"
               sx={{
-                display: { xs: 'block', md: 'none' },
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontWeight: 700,
+                color: 'inherit',
+                textDecoration: 'none',
               }}
             >
-              {pages.map((page) => (
-                <MenuItem 
-                  key={page.name} 
-                  onClick={() => {
-                    handleCloseNavMenu();
-                    navigate(page.path);
-                  }}
-                  selected={isActive(page.path)}
-                >
-                  <ListItemIcon>
-                    {page.icon}
-                  </ListItemIcon>
-                  <Typography textAlign="center">{page.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+              Apoyos Sociales
+            </Typography>
 
-          {/* Logo - Móvil */}
-          <Typography
-            variant="h6"
-            noWrap
-            component={RouterLink}
-            to="/dashboard"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Apoyos Sociales
-          </Typography>
-
-          {/* Menú Desktop */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.name}
-                component={RouterLink}
-                to={page.path}
-                onClick={handleCloseNavMenu}
-                sx={{ 
-                  my: 2, 
-                  color: 'white', 
-                  display: 'flex',
-                  alignItems: 'center',
-                  mx: 1,
-                  backgroundColor: isActive(page.path) ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                  }
-                }}
-                startIcon={page.icon}
+            {/* Menú Móvil */}
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="menu"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
               >
-                {page.name}
-              </Button>
-            ))}
-          </Box>
-
-          {/* Menú Usuario */}
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Abrir opciones">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar 
-                  alt={user?.name || 'Usuario'} 
-                  sx={{ 
-                    bgcolor: 'secondary.main',
-                    color: 'white'
-                  }}
-                >
-                  {user?.name?.charAt(0) || 'U'}
-                </Avatar>
+                <MenuIcon />
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
+                {pages.map((page) => (
+                  <MenuItem 
+                    key={page.name} 
+                    onClick={() => {
+                      handleCloseNavMenu();
+                      navigate(page.path);
+                    }}
+                    selected={isActive(page.path)}
+                  >
+                    <ListItemIcon>
+                      {page.icon}
+                    </ListItemIcon>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+
+            {/* Logo - Móvil */}
+            <Typography
+              variant="h6"
+              noWrap
+              component={RouterLink}
+              to="/dashboard"
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                fontWeight: 700,
+                color: 'inherit',
+                textDecoration: 'none',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              <MenuItem disabled>
-                <Typography variant="body2" color="textSecondary">
-                  {user?.role === 'admin' ? 'Administrador' : 
-                   user?.role === 'supervisor' ? 'Supervisor' : 'Capturista'}
-                </Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu}>
-                <ListItemIcon>
-                  <AccountCircleIcon fontSize="small" />
-                </ListItemIcon>
-                <Typography textAlign="center">{user?.name}</Typography>
-              </MenuItem>
-              <Divider />
-              <MenuItem onClick={handleLogout}>
-                <ListItemIcon>
-                  <LogoutIcon fontSize="small" />
-                </ListItemIcon>
-                <Typography textAlign="center">Cerrar Sesión</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+              Apoyos Sociales
+            </Typography>
+
+            {/* Menú Desktop */}
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+              {pages.map((page) => (
+                <Button
+                  key={page.name}
+                  component={RouterLink}
+                  to={page.path}
+                  onClick={handleCloseNavMenu}
+                  sx={{ 
+                    my: 2, 
+                    color: 'white', 
+                    display: 'flex',
+                    alignItems: 'center',
+                    mx: 1,
+                    backgroundColor: isActive(page.path) ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                    }
+                  }}
+                  startIcon={page.icon}
+                >
+                  {page.name}
+                </Button>
+              ))}
+            </Box>
+
+            {/* Menú Usuario */}
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Abrir opciones">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar 
+                    alt={user?.name || 'Usuario'} 
+                    sx={{ 
+                      bgcolor: 'secondary.main',
+                      color: 'white'
+                    }}
+                  >
+                    {user?.name?.charAt(0) || 'U'}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem disabled>
+                  <Typography variant="body2" color="textSecondary">
+                    {user?.role === 'admin' ? 'Administrador' : 
+                     user?.role === 'supervisor' ? 'Supervisor' : 'Capturista'}
+                  </Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <ListItemIcon>
+                    <AccountCircleIcon fontSize="small" />
+                  </ListItemIcon>
+                  <Typography textAlign="center">{user?.name}</Typography>
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleLogout}>
+                  <ListItemIcon>
+                    <LogoutIcon fontSize="small" />
+                  </ListItemIcon>
+                  <Typography textAlign="center">Cerrar Sesión</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      {/* Pie de página con información del proyecto */}
+      <Box
+        component="footer"
+        sx={{
+          mt: 'auto',
+          py: 2,
+          px: 2,
+          backgroundColor: 'rgba(0, 0, 0, 0.03)',
+          borderTop: '1px solid',
+          borderColor: 'divider',
+          position: 'fixed',
+          bottom: 0,
+          width: '100%',
+          zIndex: 10
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography variant="body2" color="text.secondary" align="center">
+            Dashboard desarrollado como evidencia del Proyecto de Modernización Administrativa
+          </Typography>
+        </Container>
+      </Box>
+    </>
   );
 };
-
 // =============== COMPONENTES PRINCIPALES ===============
 
+// Componente de Login
 // Componente de Login
 const Login = () => {
   const navigate = useNavigate();
@@ -664,7 +736,7 @@ const Login = () => {
       await login(username, password);
       navigate(from, { replace: true });
     } catch (err) {
-      setError('Credenciales inválidas. Para la demo, prueba con: admin/admin123');
+      setError('Credenciales inválidas. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -685,6 +757,42 @@ const Login = () => {
           minHeight: '100vh'
         }}
       >
+        {/* NUEVO: Logotipos institucionales */}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            mb: 3,
+            flexWrap: 'wrap'
+          }}
+        >
+          <img 
+            src={uvegLogoUrl} 
+            alt="UVEG Logo" 
+            style={{ height: '50px', margin: '0 10px', objectFit: 'contain' }} 
+          />
+          <img 
+            src={tlalLogoUrl} 
+            alt="Tlalpujahua Logo" 
+            style={{ height: '50px', margin: '0 10px', objectFit: 'contain' }} 
+          />
+          <img 
+            src={tlalGobLogoUrl} 
+            alt="Gobierno Tlalpujahua Logo" 
+            style={{ height: '50px', margin: '0 10px', objectFit: 'contain' }} 
+          />
+        </Box>
+        
+        {/* NUEVO: Información institucional */}
+        <Box sx={{ mb: 3, textAlign: 'center' }}>
+          <Typography variant="subtitle1" fontWeight="bold" color="primary">
+            Área de Desarrollo Social - Tlalpujahua, Michoacán
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            Estadía Profesional UVEG
+          </Typography>
+        </Box>
+        
         <Paper 
           elevation={3} 
           sx={{ 
@@ -760,21 +868,25 @@ const Login = () => {
             <Box mt={2}>
               <Alert severity="info">
                 <Typography variant="body2">
-                  <strong>Usuarios de prueba:</strong>
+                  <strong>Usuario de prueba para el asesor:</strong>
                 </Typography>
                 <Typography variant="body2">
-                  Admin: admin / admin123
-                </Typography>
-                <Typography variant="body2">
-                  Capturista: capturista / captura123
-                </Typography>
-                <Typography variant="body2">
-                  Supervisor: supervisor / super123
+                  Admin: Asesor / el inicio de su correo sin el "@uveg.edu.mx"
                 </Typography>
               </Alert>
             </Box>
           </Box>
         </Paper>
+        
+        {/* NUEVO: Pie de página */}
+        <Box sx={{ mt: 3, textAlign: 'center' }}>
+          <Typography variant="body2" color="text.secondary">
+            Dashboard desarrollado como evidencia del Proyecto de Modernización Administrativa
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Desarrollado por Alfonso Boldo
+          </Typography>
+        </Box>
       </Box>
     </Container>
   );
